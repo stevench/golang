@@ -5,11 +5,16 @@ import (
 	"io"
 	. "newland/apis"
 	db "newland/database"
+	. "newland/middleware"
 	"os"
 )
 
 func initRouter() *gin.Engine {
 	router := gin.Default()
+
+	router.Use(RequestIdMiddleware())
+
+	router.Use(Middleware2())
 
 	router.GET("/", IndexApi)
 
