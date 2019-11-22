@@ -2,6 +2,7 @@ package apis
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -14,11 +15,14 @@ func IndexApi(c *gin.Context) {
 }
 
 func AddPersonApi(c *gin.Context) {
-	firstName := c.Request.FormValue("first_name")
-	lastName := c.Request.FormValue("last_name")
+	var p Person
+	c.Bind(&p)
+	//firstName := c.Request.FormValue("first_name")
+	//lastName := c.Request.FormValue("last_name")
+	//city := c.Request.FormValue("city")
 
-	p := &Person{FirstName: firstName, LastName: lastName}
-
+	//p := &Person{FirstName: firstName, LastName: lastName, City: city}
+	beego.Info(p)
 	err := p.AddPerson()
 	if err != nil {
 		log.Fatalln(err)
@@ -31,8 +35,9 @@ func AddPersonApi(c *gin.Context) {
 }
 
 func ModPersonApi(c *gin.Context) {
-	firstName := c.Request.FormValue("first_name")
-	lastName := c.Request.FormValue("last_name")
+	//firstName := c.Request.FormValue("first_name")
+	//lastName := c.Request.FormValue("last_name")
+	//city := c.Request.FormValue("city")
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		log.Fatalln(err)
@@ -41,8 +46,10 @@ func ModPersonApi(c *gin.Context) {
 
 	p.GetPerson()
 	if p.FirstName != "" {
-		p.FirstName = firstName
-		p.LastName = lastName
+		//p.FirstName = firstName
+		//p.LastName = lastName
+		//p.City = city
+		c.Bind(&p)
 		p.ModPerson()
 		msg := fmt.Sprintf("update successful %d", p.ID)
 		c.JSON(http.StatusOK, gin.H{

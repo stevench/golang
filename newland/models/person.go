@@ -8,6 +8,7 @@ type Person struct {
 	ID        uint64 `json: "id"`
 	FirstName string `json:"first_name" form:"first_name"`
 	LastName  string `json:"last_name" form:"last_name"`
+	City      string `json: "city" form:"city"`
 }
 
 func (p Person) TableName() string {
