@@ -14,7 +14,7 @@ func initRouter() *gin.Engine {
 
 	router.Use(RequestIdMiddleware())
 
-	router.Use(Middleware2())
+	router.Use(LoadTlsMiddleware())
 
 	router.GET("/", IndexApi)
 
@@ -35,5 +35,5 @@ func main() {
 	gin.DefaultWriter = io.MultiWriter(os.Stdout)
 	defer db.SqlDB.Close()
 	router := initRouter()
-	router.Run(":8000")
+	router.RunTLS(":8000", "./ssl/server.crt", "./ssl/server.key")
 }

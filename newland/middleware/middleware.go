@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
+	"github.com/unrolled/secure"
 )
 
 func RequestIdMiddleware() gin.HandlerFunc {
@@ -13,10 +14,19 @@ func RequestIdMiddleware() gin.HandlerFunc {
 	}
 }
 
-func Middleware2() gin.HandlerFunc {
+func LoadTlsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		beego.Info("entry middleware2...")
+		beego.Info("load ssl crt...")
+		middleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "localhost:8000",
+		})
+		err := middleware.Process(c.Writer, c.Request)
+		if err != nil {
+			beego.Info(err)
+			return
+		}
 		c.Next()
-		beego.Info("exit middleware2...")
+		beego.Info("finished load ssl srt...")
 	}
 }
